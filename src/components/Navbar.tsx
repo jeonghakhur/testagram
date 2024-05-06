@@ -1,4 +1,5 @@
 'use client';
+
 import Link from 'next/link';
 import { HomeOutline, PlusSquare, SearchLine } from '@/components/ui/icons';
 import { usePathname } from 'next/navigation';
