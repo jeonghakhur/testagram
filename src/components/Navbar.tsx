@@ -22,7 +22,9 @@ export default function NavBar() {
         <ul className="flex w-[300px]">
           {menu.map(({ text, href, icon }) => (
             <li key={href} className={pathName === href ? 'text-sky-700' : undefined}>
-              <Link href={href}>{icon}</Link>
+              <Link href={href} title={text}>
+                {icon}
+              </Link>
             </li>
           ))}
         </ul>
