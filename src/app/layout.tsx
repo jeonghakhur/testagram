@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import NavBar from '@/components/Navbar';
+import { clsx } from 'clsx';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,8 +18,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <header>
+      <body className={(clsx(inter.className), 'w-full w-screen-xl oveflow-auto mx-auto')}>
+        <header className="sticky top-0 bg-white z-10 border-b">
           <NavBar />
         </header>
         <body>{children}</body>
