@@ -4,6 +4,7 @@ import './globals.css';
 import NavBar from '@/components/Navbar';
 import { clsx } from 'clsx';
 import AuthContext from '@/context/AuthContext';
+import SWRConfigContext from '@/context/SWRConfigContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,12 +20,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={(clsx(inter.className), 'w-full w-screen-xl oveflow-auto mx-auto')}>
+      <body
+        className={
+          (clsx(inter.className), 'w-full w-screen-xl oveflow-auto mx-auto')
+        }
+      >
         <AuthContext>
           <header className="sticky top-0 bg-white z-10 border-b">
             <NavBar />
           </header>
-          <body>{children}</body>
+          <main>
+            <SWRConfigContext>{children}</SWRConfigContext>
+          </main>
         </AuthContext>
       </body>
     </html>

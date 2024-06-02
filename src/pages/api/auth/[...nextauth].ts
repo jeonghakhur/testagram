@@ -33,12 +33,20 @@ export const authOptions: NextAuthOptions = {
       });
       return true;
     },
-    async session({ session }) {
+    async jwt({ token, account }) {
+      const newToken = { ...token };
+      if (account) {
+        newToken.id = account.providerAccountId;
+      }
+      return newToken;
+    },
+    async session({ session, token }) {
       const newSession = { ...session };
       const user = newSession?.user;
       if (user) {
         newSession.user = {
           ...user,
+          id: token.id,
           username: user.email?.split('@')[0] || '',
         };
       }

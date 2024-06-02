@@ -24,7 +24,3 @@ export default function ColorButton({ text, onClick, className }: Props) {
     </div>
   );
 }
-
-ColorButton.defaultProps = {
-  className: '',
-};
