@@ -28,7 +28,10 @@ export default function NavBar() {
       <nav className="">
         <ul className="flex gap-4 p-4 items-center">
           {menu.map(({ text, href, icon }) => (
-            <li key={href} className={pathName === href ? 'text-sky-700' : undefined}>
+            <li
+              key={href}
+              className={pathName === href ? 'text-sky-700' : undefined}
+            >
               <Link href={href} title={text}>
                 {icon}
               </Link>
@@ -37,7 +40,7 @@ export default function NavBar() {
           {user && (
             <li>
               <Link href={`/user/${user.username}`}>
-                <Avatar image={user.image} />
+                <Avatar image={user.image} size="small" highlight />
               </Link>
             </li>
           )}
