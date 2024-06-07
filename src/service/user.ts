@@ -26,7 +26,7 @@ export async function getUserByUser(id: string) {
     `*[_type == "user" && _id == "${id}"]{
       ...,
       "id": _id,
-      following[]->{username, image},
+      following[]->{"id": _id, username, image},
       followers[]->{username, image},
       "bookmarks": bookmarks[]->id
     }[0]`

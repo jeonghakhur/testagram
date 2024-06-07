@@ -19,7 +19,7 @@ function getContainerStyle(size: string, highlight: boolean): string {
 function getImageSizeStyle(size: string): string {
   return size === 'small'
     ? 'w-[34px] h-[34px] p-[0.1rem]'
-    : 'w-16 h 16 p-[0.2rem]';
+    : 'w-16 h-16 p-[0.2rem]';
 }
 
 export default function Avatar({
@@ -34,7 +34,10 @@ export default function Avatar({
         src={image ?? undefined}
         alt="user profile"
         referrerPolicy="no-referrer"
-        className={clsx('bg-white rounded-full', getImageSizeStyle(size))}
+        className={clsx(
+          'bg-white rounded-full object-cover',
+          getImageSizeStyle(size)
+        )}
       />
     </div>
   );

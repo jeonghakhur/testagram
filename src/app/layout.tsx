@@ -21,15 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={
-          (clsx(inter.className), 'w-full w-screen-xl oveflow-auto mx-auto')
-        }
+        className={(clsx(inter.className), 'w-full max-w-screen-xl mx-auto')}
       >
         <AuthContext>
           <header className="sticky top-0 bg-white z-10 border-b">
             <NavBar />
           </header>
-          <main>
+          <main className="w-full bg-neutral-100 p-8">
             <SWRConfigContext>{children}</SWRConfigContext>
           </main>
         </AuthContext>

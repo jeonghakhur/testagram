@@ -13,12 +13,12 @@ export default async function Home() {
   }
 
   return (
-    <section className="flex flex-col md:flex-row max-w=[850px]">
-      <div className="w-full basis-3/4">
+    <section className="flex flex-col md:flex-row">
+      <div className="md:w-[75%]">
         <FollowingBar />
         <PostList />
       </div>
-      <div className="basis-1/4">
+      <div className="md:w-[25%] md:pl-8">
         <SideBar user={user} />
       </div>
     </section>
