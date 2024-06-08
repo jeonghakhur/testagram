@@ -4,7 +4,20 @@ import { DetailUser } from '@/context/model/user';
 import Link from 'next/link';
 import { PropagateLoader } from 'react-spinners';
 import useSWR from 'swr';
+import Carousel from 'react-multi-carousel';
 import Avatar from './Avatar';
+import 'react-multi-carousel/lib/styles.css';
+
+const responsive = {
+  desktop: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 7,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 4,
+  },
+};
 
 export default function FollowingBar() {
   const { data, isLoading: loading } = useSWR<DetailUser>('/api/me');
@@ -18,18 +31,18 @@ export default function FollowingBar() {
         (!users || users.length === 0) && <p>팔로잉하는 사람이 없습니다.</p>
       )}
       {users && users.length > 0 && (
-        <ul className="w-full flex gap-2">
+        <Carousel className="w-full flex gap-2" responsive={responsive}>
           {users.map(({ id, image, username }) => (
-            <li key={`${id}`} className="flex flex-col items-center w-20">
+            <div key={`${id}`} className="flex flex-col items-center w-20">
               <Link href={`/user/${id}`}>
                 <Avatar image={image} highlight />
               </Link>
               <p className="w-full text-sm text-ellipsis overflow-hidden mt-1 text-center">
                 {username}
               </p>
-            </li>
+            </div>
           ))}
-        </ul>
+        </Carousel>
       )}
     </section>
   );
