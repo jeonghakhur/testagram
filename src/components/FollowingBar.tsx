@@ -33,14 +33,14 @@ export default function FollowingBar() {
       {users && users.length > 0 && (
         <Carousel containerClass="w-full flex gap-2" responsive={responsive}>
           {users.map(({ id, image, username }) => (
-            <li key={`${id}`} className="flex flex-col items-center w-20">
+            <div key={`${id}`} className="flex flex-col items-center w-20">
               <Link href={`/user/${id}`}>
                 <Avatar image={image} highlight />
               </Link>
               <p className="w-full text-sm text-ellipsis overflow-hidden mt-1 text-center">
                 {username}
               </p>
-            </li>
+            </div>
           ))}
         </Carousel>
       )}

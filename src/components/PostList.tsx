@@ -3,26 +3,26 @@
 import { SimplePost } from '@/model/post';
 import React from 'react';
 import useSWR from 'swr';
+// import { GridLoader } from 'react-spinners';
+import PostListCard from './PostListCard';
 
 export default function PostList() {
   const { data: posts, isLoading: loading } =
     useSWR<SimplePost[]>('/api/posts');
-  // console.log(posts);
   return (
-    <div>
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <ul>
-          {posts &&
-            posts?.map(({ id, text }) => (
-              <li key={id}>
-                {text}
-                <p>{/* <img src={image} alt="alt" /> */}</p>
-              </li>
-            ))}
-        </ul>
+    <section>
+      {loading && (
+        <div className="flex justify-center py-20">
+          {/* <GridLoader color="red" /> */}
+        </div>
       )}
-    </div>
+      {posts && (
+        <div>
+          {posts.map((post) => (
+            <PostListCard post={post} key={post.id} />
+          ))}
+        </div>
+      )}
+    </section>
   );
 }

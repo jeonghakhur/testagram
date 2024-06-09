@@ -9,7 +9,7 @@ const simplePostProjection = `
   "text": comments[0].comment,
   "comments": count(comments),
   "id": _id,
-  "createAt": _createdAt,
+  "createdAt": _createdAt,
 `;
 
 export async function getFollowingPostsOf(userId: string) {
@@ -17,7 +17,7 @@ export async function getFollowingPostsOf(userId: string) {
     .fetch(
       `*[_type == "post" && author->._id == "${userId}" 
       || author._ref in *[_type == "user" && _id == "${userId}"].following[]._ref]
-      | order(_id desc){${simplePostProjection}}`
+      | order(_createdAt desc){${simplePostProjection}}`
     )
     .then((posts) =>
       posts.map((post: SimplePost) => ({
