@@ -3,8 +3,13 @@
 import { SimplePost } from '@/model/post';
 import React from 'react';
 import useSWR from 'swr';
-// import { GridLoader } from 'react-spinners';
+import dynamic from 'next/dynamic';
 import PostListCard from './PostListCard';
+
+const GridLoader = dynamic(
+  () => import('react-spinners').then((lib) => lib.GridLoader),
+  { ssr: false }
+);
 
 export default function PostList() {
   const { data: posts, isLoading: loading } =
@@ -13,13 +18,13 @@ export default function PostList() {
     <section>
       {loading && (
         <div className="flex justify-center py-20">
-          {/* <GridLoader color="red" /> */}
+          <GridLoader color="red" />
         </div>
       )}
       {posts && (
         <div>
-          {posts.map((post) => (
-            <PostListCard post={post} key={post.id} />
+          {posts.map((post, index) => (
+            <PostListCard post={post} key={post.id} priority={index < 2} />
           ))}
         </div>
       )}
