@@ -26,3 +26,11 @@ export async function getFollowingPostsOf(userId: string) {
       }))
     );
 }
+
+export async function getPost(id: string) {
+  return client.fetch(
+    `*[_type == "post" && _id == "${id}"][0]{
+      comments[]{comment, "commentID": _key, "userName": author->username, "image": author->image}
+    }`
+  );
+}
