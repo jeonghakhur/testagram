@@ -9,7 +9,7 @@ export type FullPost = {
   userName: string;
   userImage: string;
   image: string;
-  text: string;
+  text?: string;
   createdAt: string;
   likes: string[];
   comments: Comment[];

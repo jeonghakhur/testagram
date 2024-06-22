@@ -20,16 +20,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={(clsx(inter.className), 'w-full max-w-screen-xl mx-auto')}
-      >
+      <body className={(clsx(inter.className), 'w-full bg-neutral-50')}>
         <AuthContext>
-          <header className="sticky top-0 bg-white z-10 border-b">
-            <NavBar />
-          </header>
-          <main className="w-full bg-neutral-100 p-8">
-            <SWRConfigContext>{children}</SWRConfigContext>
-          </main>
+          <div className="max-w-screen-xl mx-auto">
+            <header className="sticky top-0 bg-white z-20 border-b">
+              <NavBar />
+            </header>
+            <main className="py-8">
+              <SWRConfigContext>{children}</SWRConfigContext>
+            </main>
+          </div>
         </AuthContext>
         <div id="portal" />
       </body>

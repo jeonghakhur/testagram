@@ -31,7 +31,10 @@ export default function FollowingBar() {
         (!users || users.length === 0) && <p>팔로잉하는 사람이 없습니다.</p>
       )}
       {users && users.length > 0 && (
-        <Carousel containerClass="w-full flex gap-2" responsive={responsive}>
+        <Carousel
+          containerClass="w-full flex gap-2 z-10"
+          responsive={responsive}
+        >
           {users.map(({ id, image, username }) => (
             <div key={`${id}`} className="flex flex-col items-center w-20">
               <Link href={`/user/${id}`}>

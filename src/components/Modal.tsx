@@ -13,17 +13,21 @@ export default function Modal({ onClose, children }: Props) {
         if (event.target === event.currentTarget) {
           onClose();
         }
-        console.log(event.target, event.currentTarget);
       }}
       role="button"
       tabIndex={0}
       className="fixed w-full h-full bg-slate-900 bg-opacity-90 z-50 top-0 left-0 py-10"
     >
-      <div className="bg-white w-[80%] h-full mx-auto">
-        <button type="button" onClick={() => onClose()} aria-label="close">
+      <div className="bg-white w-[80%] h-full mx-auto relative">
+        <button
+          type="button"
+          onClick={() => onClose()}
+          aria-label="close"
+          className="absolute right-0 p-2"
+        >
           <CgClose />
         </button>
-        <div>{children}</div>
+        {children}
       </div>
     </section>
   );
