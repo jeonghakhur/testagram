@@ -1,15 +1,20 @@
 export type User = {
   id: string;
   name: string;
-  username: string;
+  userName: string;
   email: string;
   image?: string;
 };
 
-export type SimpleUser = Pick<User, 'id' | 'username' | 'image'>;
+export type SimpleUser = Pick<User, 'id' | 'userName' | 'image'>;
 
 export type DetailUser = User & {
   following: SimpleUser[];
   followers: SimpleUser[];
   bookmarks: string[];
+};
+
+export type ProfileUser = SimpleUser & {
+  following: number;
+  followers: number;
 };
