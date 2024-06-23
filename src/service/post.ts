@@ -12,6 +12,13 @@ const simplePostProjection = `
   "createdAt": _createdAt,
 `;
 
+function mapPosts(posts: SimplePost[]) {
+  return posts.map((post) => ({
+    ...post,
+    image: urlFor(post.image).width(800).url(),
+  }));
+}
+
 export async function getFollowingPostsOf(userId: string) {
   return client
     .fetch(
@@ -19,12 +26,7 @@ export async function getFollowingPostsOf(userId: string) {
       || author._ref in *[_type == "user" && _id == "${userId}"].following[]._ref]
       | order(_createdAt desc){${simplePostProjection}}`
     )
-    .then((posts) =>
-      posts.map((post: SimplePost) => ({
-        ...post,
-        image: urlFor(post.image).width(800).url(),
-      }))
-    );
+    .then(mapPosts);
 }
 
 export async function getPost(id: string) {
@@ -33,4 +35,37 @@ export async function getPost(id: string) {
       comments[]{comment, "commentID": _key, "userName": author->username, "image": author->image}
     }`
   );
+}
+
+export async function getPostOf(userId: string) {
+  return client
+    .fetch(
+      `*[_type == "post" && author->._id == "${userId}"]
+      | order(_createdAt desc){
+         ${simplePostProjection}
+    }`
+    )
+    .then(mapPosts);
+}
+
+export async function getLikedPostOf(userId: string) {
+  return client
+    .fetch(
+      `*[_type == "post" && "${userId}" in likes[]->_id]
+      | order(_createdAt desc){
+         ${simplePostProjection}
+    }`
+    )
+    .then(mapPosts);
+}
+
+export async function getSavedPostOf(userId: string) {
+  return client
+    .fetch(
+      `*[_type == "post" && _id in *[_type == "user" && _id == "${userId}"].bookmarks[]._ref]
+      | order(_createdAt desc){
+         ${simplePostProjection}
+    }`
+    )
+    .then(mapPosts);
 }

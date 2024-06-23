@@ -26,7 +26,7 @@ export default function RootLayout({
             <header className="sticky top-0 bg-white z-20 border-b">
               <NavBar />
             </header>
-            <main className="py-8">
+            <main className="p-6">
               <SWRConfigContext>{children}</SWRConfigContext>
             </main>
           </div>

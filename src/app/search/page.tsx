@@ -2,7 +2,7 @@
 
 import Avatar from '@/components/Avatar';
 import useDebounce from '@/hooks/debounce';
-import { ProfileUser } from '@/model/user';
+import { SearchUser } from '@/model/user';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
@@ -11,7 +11,7 @@ import useSWR from 'swr';
 export default function Page() {
   const [keyword, setkeyword] = useState<string>('');
   const debounceKeyword = useDebounce(keyword);
-  const { data: users, isLoading } = useSWR<ProfileUser[]>(
+  const { data: users, isLoading } = useSWR<SearchUser[]>(
     `/api/search/${debounceKeyword}`
   );
 

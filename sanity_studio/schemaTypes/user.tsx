@@ -70,11 +70,10 @@ export const user = {
       media: 'image',
     },
     prepare({title, subtitle, media}: any) {
-      console.log(media)
       return {
-        title: title,
-        subtitle: subtitle,
-        media: <Media background={media}></Media>,
+        title,
+        subtitle,
+        media: <Media background={media} />,
       }
     },
   },

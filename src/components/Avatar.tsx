@@ -1,10 +1,11 @@
 import clsx from 'clsx';
 
-type AvatarSize = 'small' | 'medium' | 'large';
+type AvatarSize = 'small' | 'medium' | 'large' | 'x-large';
 type Props = {
   image?: string | null;
   size?: AvatarSize;
   highlight?: boolean;
+  className?: string;
 };
 
 function getContainerSize(size: AvatarSize): string {
@@ -14,7 +15,10 @@ function getContainerSize(size: AvatarSize): string {
   if (size === 'medium') {
     return 'w-11 h-11';
   }
-  return 'w-[68px] h-[68px]';
+  if (size === 'large') {
+    return 'w-[68px] h-[68px]';
+  }
+  return 'w-[168px] h-[168px]';
 }
 
 function getImageSizeStyle(size: AvatarSize): string {
@@ -24,7 +28,10 @@ function getImageSizeStyle(size: AvatarSize): string {
   if (size === 'medium') {
     return 'w-[42px] h-[42px] p-[0.1rem]';
   }
-  return 'w-16 h-16 p-[0.2rem]';
+  if (size === 'large') {
+    return 'w-16 h-16 p-[0.2rem]';
+  }
+  return 'w-[160px] h-[160px] p-[0.2rem]';
 }
 
 function getContainerStyle(size: AvatarSize, highlight: boolean): string {
@@ -40,9 +47,10 @@ export default function Avatar({
   image,
   size = 'large',
   highlight = false,
+  className = '',
 }: Props) {
   return (
-    <div className={getContainerStyle(size, highlight)}>
+    <div className={clsx(getContainerStyle(size, highlight), className)}>
       {/* // eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={image ?? undefined}
