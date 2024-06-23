@@ -31,10 +31,13 @@ export default async function UserProfile({ id }: Props) {
         <p>{name}</p>
         <FollowButton userId={userId} />
         <ul className="flex gap-2">
-          {tabs?.map(({ label, data }) => (
+          {tabs?.map(({ label, data }, index) => (
             <li key={label}>
-              <span>{label}</span>
-              <span>{data}</span>
+              {index !== 0 && (
+                <span className="mx-2 text-sm text-neutral-300">|</span>
+              )}
+              <span>{label}:</span>
+              <span className="ml-1">{data}</span>
             </li>
           ))}
         </ul>
