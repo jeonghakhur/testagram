@@ -6,14 +6,38 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { RiBookmarkLine } from 'react-icons/ri';
 import { FaShareSquare } from 'react-icons/fa';
 import useSWR from 'swr';
+import Image from 'next/image';
+import { SimplePost } from '@/model/post';
+import dynamic from 'next/dynamic';
+import { signIn, useSession } from 'next-auth/react';
+import ModalPortal from './ModalPortal';
+import Modal from './Modal';
+import PostDetail from './PostDetail';
 
 type Props = {
   id: string;
 };
 export default function UserPost({ id: userId }: Props) {
   const [tab, setTab] = useState('posts');
-  const { data: post } = useSWR(`/api/users/${userId}/${tab}`);
-  console.log(post);
+  const [openModal, setOpenModal] = useState(false);
+  const { data: posts, isLoading } = useSWR<SimplePost[]>(
+    `/api/users/${userId}/${tab}`
+  );
+  const { data: session } = useSession();
+
+  const GridLoader = dynamic(
+    () => import('react-spinners').then((lib) => lib.GridLoader),
+    { ssr: false }
+  );
+
+  const handleOpenPost = () => {
+    if (!session?.user) {
+      return signIn();
+    }
+    setOpenModal(true);
+    return null;
+  };
+
   return (
     <div className="border-t mt-6">
       <div>
@@ -36,7 +60,8 @@ export default function UserPost({ id: userId }: Props) {
               type="button"
               onClick={() => setTab('liked')}
               className={clsx(
-                tab === 'liked' && 'p-2 border-t-2 border-black w-full'
+                'border-t-2 p-2 w-full',
+                tab === 'liked' ? 'border-black' : 'border-transparent'
               )}
             >
               <AiOutlineHeart className="inline-block mr-1" />
@@ -48,7 +73,8 @@ export default function UserPost({ id: userId }: Props) {
               type="button"
               onClick={() => setTab('saved')}
               className={clsx(
-                tab === 'saved' && 'p-2 border-t-2 border-black w-full'
+                'border-t-2 p-2 w-full',
+                tab === 'saved' ? 'border-black' : 'border-transparent'
               )}
             >
               <RiBookmarkLine className="inline-block mr-1" />
@@ -57,6 +83,35 @@ export default function UserPost({ id: userId }: Props) {
           </li>
         </ul>
       </div>
+      {isLoading && (
+        <div className="flex h-[300px] items-center justify-center">
+          <GridLoader color="red" />
+        </div>
+      )}
+      {posts && (
+        <ul className="grid grid-cols-1 gap-2">
+          {posts?.map((post, index) => (
+            <li key={post.id} className="w-full relative aspect-square">
+              <Image
+                fill
+                sizes="650px"
+                src={post.image}
+                priority={index > 6}
+                alt=""
+                className="object-cover"
+                onClick={handleOpenPost}
+              />
+              {openModal && (
+                <ModalPortal>
+                  <Modal onClose={() => setOpenModal(false)}>
+                    <PostDetail post={post} />
+                  </Modal>
+                </ModalPortal>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
