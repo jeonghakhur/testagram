@@ -74,9 +74,14 @@ export async function getUserForProfile(id: string) {
     }
     `
     )
-    .then((user) => ({
-      ...user,
-      following: user.following ?? 0,
-      followers: user.followers ?? 0,
-    }));
+    .then((user) => {
+      if (!user) {
+        return null;
+      }
+      return {
+        ...user,
+        following: user?.following ?? 0,
+        followers: user?.followers ?? 0,
+      };
+    });
 }

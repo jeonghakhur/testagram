@@ -8,11 +8,11 @@ import { FaShareSquare } from 'react-icons/fa';
 import useSWR from 'swr';
 import Image from 'next/image';
 import { SimplePost } from '@/model/post';
-import dynamic from 'next/dynamic';
 import { signIn, useSession } from 'next-auth/react';
 import ModalPortal from './ModalPortal';
 import Modal from './Modal';
 import PostDetail from './PostDetail';
+import GridLoader from './GridLoader';
 
 type Props = {
   id: string;
@@ -24,11 +24,6 @@ export default function UserPost({ id: userId }: Props) {
     `/api/users/${userId}/${tab}`
   );
   const { data: session } = useSession();
-
-  const GridLoader = dynamic(
-    () => import('react-spinners').then((lib) => lib.GridLoader),
-    { ssr: false }
-  );
 
   const handleOpenPost = () => {
     if (!session?.user) {
@@ -83,11 +78,7 @@ export default function UserPost({ id: userId }: Props) {
           </li>
         </ul>
       </div>
-      {isLoading && (
-        <div className="flex h-[300px] items-center justify-center">
-          <GridLoader color="red" />
-        </div>
-      )}
+      {isLoading && <GridLoader />}
       {posts && (
         <ul className="grid grid-cols-1 gap-2">
           {posts?.map((post, index) => (
@@ -96,7 +87,7 @@ export default function UserPost({ id: userId }: Props) {
                 fill
                 sizes="650px"
                 src={post.image}
-                priority={index > 6}
+                priority={index < 6}
                 alt=""
                 className="object-cover"
                 onClick={handleOpenPost}

@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
         newSession.user = {
           ...user,
           id: token.id,
-          username: user.email?.split('@')[0] || '',
+          userName: user.email?.split('@')[0] || '',
         };
       }
 

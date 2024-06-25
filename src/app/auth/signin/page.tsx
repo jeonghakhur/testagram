@@ -1,8 +1,13 @@
 import SignIn from '@/components/Signin';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { getProviders } from 'next-auth/react';
 import { redirect } from 'next/navigation';
+
+export const metadata: Metadata = {
+  title: 'Signin',
+};
 
 type Props = {
   searchParams: {
