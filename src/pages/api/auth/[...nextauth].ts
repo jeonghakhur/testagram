@@ -33,10 +33,10 @@ export const authOptions: NextAuthOptions = {
       });
       return true;
     },
-    async jwt({ token, account }) {
+    async jwt({ token, user }) {
       const newToken = { ...token };
-      if (account) {
-        newToken.id = account.providerAccountId;
+      if (user) {
+        newToken.id = user.id;
       }
       return newToken;
     },

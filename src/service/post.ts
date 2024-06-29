@@ -5,7 +5,7 @@ const simplePostProjection = `
   "userName": author->username,
   "userImage": author->image,
   "image": photo,
-  "likes": likes[]->username,
+  "likes": likes[]->_id,
   "text": comments[0].comment,
   "comments": count(comments),
   "id": _id,
@@ -15,6 +15,7 @@ const simplePostProjection = `
 function mapPosts(posts: SimplePost[]) {
   return posts.map((post) => ({
     ...post,
+    likes: post.likes ?? [],
     image: urlFor(post.image).width(800).url(),
   }));
 }
@@ -29,9 +30,9 @@ export async function getFollowingPostsOf(userId: string) {
     .then(mapPosts);
 }
 
-export async function getPost(id: string) {
+export async function getPost(userId: string) {
   return client.fetch(
-    `*[_type == "post" && _id == "${id}"][0]{
+    `*[_type == "post" && _id == "${userId}"][0]{
       comments[]{comment, "commentID": _key, "userName": author->username, "image": author->image}
     }`
   );
@@ -68,4 +69,24 @@ export async function getSavedPostOf(userId: string) {
     }`
     )
     .then(mapPosts);
+}
+
+export async function likePost(postId: string, userId: string) {
+  return client
+    .patch(postId)
+    .setIfMissing({ likes: [] })
+    .append('likes', [
+      {
+        _ref: userId,
+        _type: 'reference',
+      },
+    ])
+    .commit({ autoGenerateArrayKeys: true });
+}
+
+export async function disLikePost(postId: string, userId: string) {
+  return client
+    .patch(postId)
+    .unset([`likes[_ref=="${userId}"]`])
+    .commit();
 }

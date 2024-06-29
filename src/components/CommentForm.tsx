@@ -2,7 +2,7 @@ import { FaRegSmile } from 'react-icons/fa';
 
 export default function CommentForm() {
   return (
-    <form className="flex items-center border-t border-neutral-300 py-2">
+    <form className="flex items-center border-t border-neutral-300 py-2 mt-auto">
       <FaRegSmile size={32} />
       <input
         type="text"

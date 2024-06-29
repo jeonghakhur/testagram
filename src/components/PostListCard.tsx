@@ -15,7 +15,7 @@ type Props = {
   priority: boolean;
 };
 export default function PostListCard({ post, priority = false }: Props) {
-  const { userImage, userName, image, createdAt, likes, text } = post;
+  const { userImage, userName, image, createdAt, likes, text, id } = post;
   const [openModal, setOpenModal] = useState(false);
   const handleClose = () => {
     setOpenModal(false);
@@ -34,6 +34,7 @@ export default function PostListCard({ post, priority = false }: Props) {
         onClick={() => setOpenModal(true)}
       />
       <ActionBar
+        id={id}
         createdAt={createdAt}
         likes={likes}
         text={text}

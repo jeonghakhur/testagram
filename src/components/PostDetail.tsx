@@ -18,8 +18,8 @@ export default function PostDetail({ post }: Props) {
   const comments = data?.comments;
 
   return (
-    <div className="flex h-full">
-      <div className="w-[60%] md:h-full relative">
+    <div className="h-full">
+      <div className="relative h-[60%]">
         <Image
           src={image}
           alt={`user by ${userName}`}
@@ -29,9 +29,9 @@ export default function PostDetail({ post }: Props) {
           className="object-cover"
         />
       </div>
-      <div className="flex flex-col md:w-[40%] md:h-full px-3">
+      <div className="px-3 flex h-[40%] flex-col justify-between">
         <PostUser userImage={userImage} userName={userName} />
-        <ul className="mb-auto">
+        <ul className="overflow-y-auto flex-1">
           {comments &&
             comments?.map(({ image: commentImage, comment }) => (
               <li className="flex gap-2 my-2 items-center">
@@ -40,7 +40,12 @@ export default function PostDetail({ post }: Props) {
               </li>
             ))}
         </ul>
-        <ActionBar createdAt={createdAt} likes={likes} userName={userName} />
+        <ActionBar
+          id={id}
+          createdAt={createdAt}
+          likes={likes}
+          userName={userName}
+        />
         <CommentForm />
       </div>
     </div>

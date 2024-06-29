@@ -1,6 +1,8 @@
 import { FullPost } from '@/model/post';
 import { parseDate } from '@/util/date';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useSWRConfig } from 'swr';
 import {
   BookmarkFillIcon,
   BookmarkIcon,
@@ -9,12 +11,29 @@ import {
 } from './ui/icons';
 import ToggleButton from './ToggleButton';
 
-type Props = Omit<FullPost, 'id' | 'userImage' | 'image' | 'comments'>;
+type Props = Omit<FullPost, 'userImage' | 'image' | 'comments'>;
 
-export default function ActionBar({ userName, createdAt, likes, text }: Props) {
+export default function ActionBar({
+  id,
+  userName,
+  createdAt,
+  likes,
+  text,
+}: Props) {
+  const { data: session } = useSession();
   const likesLen = likes ? likes.length : 0;
-  const [liked, setLiked] = useState(false);
+  const user = session?.user;
+  // const [liked, setLiked] = useState(user ? likes.includes(user.id) : false);
+  const liked = user ? likes.includes(user.id) : false;
   const [bookmarked, setBookmarked] = useState(false);
+  const { mutate } = useSWRConfig();
+
+  const handleLike = (like: boolean) => {
+    fetch('/api/likes', {
+      method: 'PUT',
+      body: JSON.stringify({ id, like }),
+    }).then(() => mutate('/api/posts'));
+  };
 
   return (
     <div className="py-3">
@@ -23,7 +42,7 @@ export default function ActionBar({ userName, createdAt, likes, text }: Props) {
         <div className="flex gap-2 px-2">
           <ToggleButton
             toggled={liked}
-            onToggle={() => setLiked(!liked)}
+            onToggle={handleLike}
             onIcon={<HeartFillIcon />}
             offIcon={<HeartIcon />}
           />
