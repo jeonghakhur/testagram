@@ -12,6 +12,7 @@ export async function PUT(req: NextRequest) {
   }
 
   const { id, like } = await req.json();
+  console.log('route', id, like);
 
   if (!id || like === undefined) {
     return new Response('Bad Request', { status: 400 });

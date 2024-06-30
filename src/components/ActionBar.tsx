@@ -1,8 +1,8 @@
-import { FullPost } from '@/model/post';
+import { SimplePost } from '@/model/post';
 import { parseDate } from '@/util/date';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useSWRConfig } from 'swr';
+import usePosts from '@/hooks/posts';
 import {
   BookmarkFillIcon,
   BookmarkIcon,
@@ -11,28 +11,23 @@ import {
 } from './ui/icons';
 import ToggleButton from './ToggleButton';
 
-type Props = Omit<FullPost, 'userImage' | 'image' | 'comments'>;
+type Props = {
+  post: SimplePost;
+};
 
-export default function ActionBar({
-  id,
-  userName,
-  createdAt,
-  likes,
-  text,
-}: Props) {
+export default function ActionBar({ post }: Props) {
+  const { userName, createdAt, likes, text } = post;
   const { data: session } = useSession();
   const likesLen = likes ? likes.length : 0;
   const user = session?.user;
   // const [liked, setLiked] = useState(user ? likes.includes(user.id) : false);
   const liked = user ? likes.includes(user.id) : false;
   const [bookmarked, setBookmarked] = useState(false);
-  const { mutate } = useSWRConfig();
-
+  const { setLike } = usePosts();
   const handleLike = (like: boolean) => {
-    fetch('/api/likes', {
-      method: 'PUT',
-      body: JSON.stringify({ id, like }),
-    }).then(() => mutate('/api/posts'));
+    if (user) {
+      setLike(post, user.id, like);
+    }
   };
 
   return (
