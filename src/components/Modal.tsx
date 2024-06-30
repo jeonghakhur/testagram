@@ -23,9 +23,9 @@ export default function Modal({ onClose, children }: Props) {
           type="button"
           onClick={() => onClose()}
           aria-label="close"
-          className="absolute right-0 p-2"
+          className="absolute right-0 p-2 z-10"
         >
-          <CgClose />
+          <CgClose color="white" size={32} />
         </button>
         {children}
       </div>

@@ -1,8 +1,8 @@
 export type Comment = {
   id: string;
   comment: string;
-  userName: string;
-  image: string;
+  userName?: string;
+  image?: string;
 };
 
 export type FullPost = {

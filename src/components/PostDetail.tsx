@@ -1,8 +1,9 @@
 'use clinet';
 
-import { SimplePost, FullPost } from '@/model/post';
-import useSWR from 'swr';
 import Image from 'next/image';
+import useComments from '@/hooks/post';
+import useMe from '@/hooks/me';
+import { SimplePost } from '@/model/post';
 import ActionBar from './ActionBar';
 import PostUser from './PostUser';
 import CommentForm from './CommentForm';
@@ -13,10 +14,18 @@ type Props = {
 };
 
 export default function PostDetail({ post }: Props) {
-  const { userImage, userName, image, id } = post;
-  const { data } = useSWR<FullPost>(`/api/posts/${id}`);
-  const comments = data?.comments;
-
+  const { id, userImage, userName, image } = post;
+  const { comments, postComment } = useComments(id);
+  const { user } = useMe();
+  const handlePostComment = (comment: string) => {
+    if (!user) return;
+    postComment({
+      comment,
+      id: user.id,
+      image: user.image,
+      userName: user.userName,
+    });
+  };
   return (
     <div className="h-full">
       <div className="relative h-[60%]">
@@ -40,7 +49,7 @@ export default function PostDetail({ post }: Props) {
             ))}
         </ul>
         <ActionBar post={post} />
-        <CommentForm />
+        <CommentForm onPostComment={handlePostComment} />
       </div>
     </div>
   );

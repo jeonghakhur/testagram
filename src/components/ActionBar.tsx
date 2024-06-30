@@ -12,10 +12,11 @@ import ToggleButton from './ToggleButton';
 
 type Props = {
   post: SimplePost;
+  children?: React.ReactNode;
 };
 
-export default function ActionBar({ post }: Props) {
-  const { id, userName, createdAt, likes, text } = post;
+export default function ActionBar({ post, children }: Props) {
+  const { id, createdAt, likes } = post;
   const { user, setBookmark } = useMe();
   const { setLike } = usePosts();
   const likesLen = likes ? likes.length : 0;
@@ -52,11 +53,7 @@ export default function ActionBar({ post }: Props) {
           />
         </div>
       </div>
-      {text && (
-        <p>
-          <span className="font-bold mr-1">{userName}</span> {text}
-        </p>
-      )}
+      {children}
       <p className="text-sm text-neutral-500 uppercase my-2">
         {parseDate(createdAt)}
       </p>
