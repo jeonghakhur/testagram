@@ -29,7 +29,7 @@ export async function getUserByUser(id: string) {
       "id": _id,
       following[]->{"id": _id, "userName": username, image},
       followers[]->{"userName": username, image},
-      "bookmarks": bookmarks[]->id
+      "bookmarks": bookmarks[]->_id
     }[0]`
   );
 }
@@ -84,4 +84,24 @@ export async function getUserForProfile(id: string) {
         followers: user?.followers ?? 0,
       };
     });
+}
+
+export async function addBookmark(userId: string, postId: string) {
+  return client
+    .patch(userId)
+    .setIfMissing({ bookmarks: [] })
+    .append('bookmarks', [
+      {
+        _ref: postId,
+        _type: 'reference',
+      },
+    ])
+    .commit({ autoGenerateArrayKeys: true });
+}
+
+export async function removeBookmark(userId: string, postId: string) {
+  return client
+    .patch(userId)
+    .unset([`bookmarks[_ref=="${postId}"]`])
+    .commit();
 }

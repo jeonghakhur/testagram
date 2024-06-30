@@ -23,7 +23,6 @@ export default function PostDetail({ post }: Props) {
         <Image
           src={image}
           alt={`user by ${userName}`}
-          priority
           fill
           sizes="650px"
           className="object-cover"
@@ -33,8 +32,8 @@ export default function PostDetail({ post }: Props) {
         <PostUser userImage={userImage} userName={userName} />
         <ul className="overflow-y-auto flex-1">
           {comments &&
-            comments?.map(({ image: commentImage, comment }) => (
-              <li className="flex gap-2 my-2 items-center">
+            comments?.map(({ id: commentId, image: commentImage, comment }) => (
+              <li className="flex gap-2 my-2 items-center" key={commentId}>
                 <Avatar image={commentImage} size="small" highlight />
                 <span className="text-sm">{comment}</span>
               </li>

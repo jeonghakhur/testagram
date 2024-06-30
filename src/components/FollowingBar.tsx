@@ -1,9 +1,8 @@
 'use client';
 
-import { DetailUser } from '@/model/user';
 import Link from 'next/link';
 import { PropagateLoader } from 'react-spinners';
-import useSWR from 'swr';
+import useMe from '@/hooks/me';
 import Carousel from 'react-multi-carousel';
 import Avatar from './Avatar';
 import 'react-multi-carousel/lib/styles.css';
@@ -24,9 +23,9 @@ const responsive = {
 };
 
 export default function FollowingBar() {
-  const { data, isLoading: loading } = useSWR<DetailUser>('/api/me');
+  const { user, isLoading: loading } = useMe();
 
-  const users = data?.following;
+  const users = user?.following;
   return (
     <section className="w-full flex justify-center items-center p-4 shadow-md shadow-neutral-300 rounded-lg min-h-[90px] mb-4 overflow-x-scroll">
       {loading ? (

@@ -33,7 +33,7 @@ export async function getFollowingPostsOf(userId: string) {
 export async function getPost(userId: string) {
   return client.fetch(
     `*[_type == "post" && _id == "${userId}"][0]{
-      comments[]{comment, "commentID": _key, "userName": author->username, "image": author->image}
+      comments[]{comment, "id": _key, "userName": author->username, "image": author->image}
     }`
   );
 }

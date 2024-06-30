@@ -1,4 +1,5 @@
 export type Comment = {
+  id: string;
   comment: string;
   userName: string;
   image: string;

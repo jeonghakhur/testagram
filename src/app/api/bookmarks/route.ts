@@ -1,5 +1,5 @@
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { disLikePost, likePost } from '@/service/post';
+import { addBookmark, removeBookmark } from '@/service/user';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -11,15 +11,15 @@ export async function PUT(req: NextRequest) {
     return new Response('Authentication Error', { status: 401 });
   }
 
-  const { postId, like } = await req.json();
+  const { postId, bookmark } = await req.json();
 
-  if (!postId || like === undefined) {
+  if (!postId || bookmark === undefined) {
     return new Response('Bad Request', { status: 400 });
   }
 
-  const request = like ? likePost : disLikePost;
+  const request = bookmark ? addBookmark : removeBookmark;
 
-  return request(postId, user.id)
+  return request(user.id, postId)
     .then((res) => NextResponse.json(res))
     .catch((error) => new Response(JSON.stringify(error), { status: 500 }));
 }

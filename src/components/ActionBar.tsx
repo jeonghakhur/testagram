@@ -1,8 +1,7 @@
 import { SimplePost } from '@/model/post';
 import { parseDate } from '@/util/date';
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import usePosts from '@/hooks/posts';
+import useMe from '@/hooks/me';
 import {
   BookmarkFillIcon,
   BookmarkIcon,
@@ -16,17 +15,21 @@ type Props = {
 };
 
 export default function ActionBar({ post }: Props) {
-  const { userName, createdAt, likes, text } = post;
-  const { data: session } = useSession();
-  const likesLen = likes ? likes.length : 0;
-  const user = session?.user;
-  // const [liked, setLiked] = useState(user ? likes.includes(user.id) : false);
-  const liked = user ? likes.includes(user.id) : false;
-  const [bookmarked, setBookmarked] = useState(false);
+  const { id, userName, createdAt, likes, text } = post;
+  const { user, setBookmark } = useMe();
   const { setLike } = usePosts();
+  const likesLen = likes ? likes.length : 0;
+  const liked = user ? likes.includes(user.id) : false;
+  const bookmarked = user?.bookmarks.includes(id) ?? false;
   const handleLike = (like: boolean) => {
     if (user) {
       setLike(post, user.id, like);
+    }
+  };
+
+  const handleBookmark = (bookmark: boolean) => {
+    if (user) {
+      setBookmark(user, id, bookmark);
     }
   };
 
@@ -43,7 +46,7 @@ export default function ActionBar({ post }: Props) {
           />
           <ToggleButton
             toggled={bookmarked}
-            onToggle={setBookmarked}
+            onToggle={handleBookmark}
             onIcon={<BookmarkFillIcon />}
             offIcon={<BookmarkIcon />}
           />

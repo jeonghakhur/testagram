@@ -1,6 +1,6 @@
 'use client';
 
-import { DetailUser } from '@/model/user';
+import { HomeUser } from '@/model/user';
 import useSWR from 'swr';
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function FollowButton({ userId }: Props) {
-  const { data: loggedInUser } = useSWR<DetailUser>('/api/me');
+  const { data: loggedInUser } = useSWR<HomeUser>('/api/me');
 
   const showButton = loggedInUser && loggedInUser.id !== userId;
   const following =
