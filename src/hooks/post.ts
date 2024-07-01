@@ -1,5 +1,5 @@
 import { Comment } from '@/model/post';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 
 async function addComment(postId: string, comment: string) {
   return fetch('/api/comments', {
@@ -17,18 +17,19 @@ export default function useComments(postId: string) {
     `/api/posts/${postId}`
   );
   const comments = data?.comments;
+  const { mutate: globalMutage } = useSWRConfig();
 
   const postComment = (comment: Comment) => {
     if (!comments) return;
     const newComments = { comments: [...comments, comment] };
 
     // eslint-disable-next-line consistent-return
-    return mutate(addComment(postId, comment.comment), {
+    return mutate(addComment(postId, comment.text), {
       optimisticData: newComments,
       populateCache: false,
       revalidate: false,
       rollbackOnError: true,
-    });
+    }).then(() => globalMutage('/api/posts'));
   };
 
   return { comments, isLoading, error, postComment };
